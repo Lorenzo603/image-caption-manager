@@ -28,6 +28,9 @@ The enhanced image viewer includes:
   - `-`: Zoom out
   - `0`: Fit to window
   - `1`: Actual size (100%)
+  - `Ctrl+Shift+Left/Right` (or `Cmd+Shift+Left/Right` on Mac): Navigate between pairs
+  - `Ctrl+R` (or `Cmd+R` on Mac): Refresh pairs
+  - `Ctrl+S` (or `Cmd+S` on Mac): Save caption
 
 ## Supported Image Formats
 
@@ -93,6 +96,7 @@ workspace/
 - `Ctrl+Alt+I` (or `Cmd+Alt+I` on Mac) - Open Image Caption Manager
 - `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac) - Next image-caption pair
 - `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac) - Previous image-caption pair
+- `Ctrl+R` (or `Cmd+R` on Mac) - Refresh image-caption pairs
 - `Ctrl+S` (or `Cmd+S` on Mac) - Save current caption (when in the caption editor)
 
 ## Development

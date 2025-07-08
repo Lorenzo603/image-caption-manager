@@ -110,6 +110,12 @@
         "key": "ctrl+shift+left",
         "mac": "cmd+shift+left",
         "when": "workbenchState != empty && !editorTextFocus"
+      },
+      {
+        "command": "imageCaptionManager.refresh",
+        "key": "ctrl+r",
+        "mac": "cmd+r",
+        "when": "workbenchState != empty && !editorTextFocus"
       }
     ]
   },

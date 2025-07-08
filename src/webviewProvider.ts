@@ -887,7 +887,25 @@ export class WebviewProvider {
                                 e.preventDefault();
                                 saveCaption();
                                 break;
+                            case 'r':
+                                e.preventDefault();
+                                vscode.postMessage({ type: 'refresh' });
+                                break;
                             // Removed ArrowLeft and ArrowRight to avoid conflicts with text editing
+                        }
+                    }
+                    
+                    // Navigation shortcuts (Ctrl+Shift+Arrow or Cmd+Shift+Arrow)
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                        switch (e.key) {
+                            case 'ArrowLeft':
+                                e.preventDefault();
+                                vscode.postMessage({ type: 'previous' });
+                                break;
+                            case 'ArrowRight':
+                                e.preventDefault();
+                                vscode.postMessage({ type: 'next' });
+                                break;
                         }
                     }
                 });
