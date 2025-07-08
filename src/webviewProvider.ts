@@ -887,14 +887,7 @@ export class WebviewProvider {
                                 e.preventDefault();
                                 saveCaption();
                                 break;
-                            case 'ArrowRight':
-                                e.preventDefault();
-                                navigateNext();
-                                break;
-                            case 'ArrowLeft':
-                                e.preventDefault();
-                                navigatePrevious();
-                                break;
+                            // Removed ArrowLeft and ArrowRight to avoid conflicts with text editing
                         }
                     }
                 });
