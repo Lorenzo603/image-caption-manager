@@ -6,11 +6,28 @@ A Visual Studio Code extension for managing image-caption pairs for AI datasets.
 
 - **Automatic Discovery**: Automatically scans your workspace for image-caption pairs (images with corresponding `.txt` files)
 - **Side-by-Side View**: Display images and their captions side-by-side for easy editing
+- **Advanced Image Viewer**: Professional image viewing with zoom, pan, and fit-to-window capabilities
 - **Navigation Controls**: Navigate between image-caption pairs with next/previous buttons
 - **Live Editing**: Edit captions directly in the interface with auto-save functionality
 - **File Watching**: Automatically detects new image-caption pairs or changes to existing ones
 - **Keyboard Shortcuts**: Use keyboard shortcuts for quick navigation and saving
 - **Status Bar Integration**: Shows the number of pairs found in the status bar
+
+## Image Viewer Features
+
+The enhanced image viewer includes:
+
+- **Zoom Controls**: Zoom in/out with buttons, mouse wheel, or keyboard shortcuts
+- **Pan Support**: Click and drag to pan around zoomed images
+- **Fit to Window**: Automatically fit image to the available space
+- **Actual Size**: View image at 100% scale
+- **Smart Zoom**: Zoom to cursor position when using mouse wheel
+- **Toolbar**: Professional toolbar with all image controls
+- **Keyboard Shortcuts**: 
+  - `+` or `=`: Zoom in
+  - `-`: Zoom out
+  - `0`: Fit to window
+  - `1`: Actual size (100%)
 
 ## Supported Image Formats
 
@@ -19,6 +36,20 @@ A Visual Studio Code extension for managing image-caption pairs for AI datasets.
 - `.gif`
 - `.bmp`
 - `.webp`
+
+## Installation
+
+### From VSIX file
+
+1. Download the `.vsix` file
+2. Open VS Code
+3. Go to Extensions view (`Ctrl+Shift+X`)
+4. Click the "..." menu and select "Install from VSIX..."
+5. Choose the downloaded `.vsix` file
+
+### From Marketplace (coming soon)
+
+Search for "Image Caption Manager" in the VS Code Extensions marketplace.
 
 ## Usage
 
@@ -32,6 +63,7 @@ A Visual Studio Code extension for managing image-caption pairs for AI datasets.
 - **Next**: Click the "Next →" button or use `Ctrl+Alt+Right` (or `Cmd+Alt+Right` on Mac)
 - **Previous**: Click the "← Previous" button or use `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac)
 - **Save**: Click the "Save" button or use `Ctrl+S` (or `Cmd+S` on Mac)
+- **Refresh**: Click the "Refresh" button to rescan for new pairs
 
 ### File Structure
 
@@ -63,13 +95,6 @@ workspace/
 - `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac) - Previous image-caption pair
 - `Ctrl+S` (or `Cmd+S` on Mac) - Save current caption (when in the caption editor)
 
-## Installation
-
-1. Open VS Code
-2. Go to Extensions (`Ctrl+Shift+X`)
-3. Search for "Image Caption Manager"
-4. Click Install
-
 ## Development
 
 To run the extension in development mode:
@@ -79,6 +104,58 @@ To run the extension in development mode:
 3. Run `npm install` to install dependencies
 4. Press `F5` to start debugging - this will open a new Extension Development Host window
 5. Open a folder with image-caption pairs to test the extension
+
+## Building and Distribution
+
+### Building the Extension
+
+1. Install dependencies: `npm install`
+2. Build the extension: `npm run package`
+3. Package for distribution: `vsce package`
+
+### Distribution Options
+
+**Option 1: Local Installation from VSIX**
+1. Build the `.vsix` file using `vsce package`
+2. Install locally using `code --install-extension image-caption-manager-1.0.0.vsix`
+3. Or use VS Code's "Install from VSIX..." option in the Extensions view
+
+**Option 2: VS Code Marketplace**
+1. Create a publisher account at https://marketplace.visualstudio.com/manage
+2. Get a Personal Access Token from Azure DevOps
+3. Login: `vsce login <publisher-id>`
+4. Publish: `vsce publish`
+
+**Option 3: Open-source Distribution**
+1. Share the `.vsix` file directly with users
+2. Users can install via "Extensions: Install from VSIX..." command
+3. Or distribute via GitHub releases
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Support
+
+For issues, feature requests, or questions, please visit the [GitHub repository](https://github.com/Lorenzo603/image-caption-manager).
+
+## Changelog
+
+### 1.0.0
+- Initial release
+- Image-caption pair discovery and management
+- Professional image viewer with zoom and pan capabilities
+- Keyboard shortcuts for efficient navigation
+- Auto-save functionality
+- Status bar integration
 
 ## Building
 

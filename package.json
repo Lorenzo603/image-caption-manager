@@ -1,13 +1,39 @@
 {
   "name": "image-caption-manager",
   "displayName": "Image Caption Manager",
-  "description": "VSCode extension to manage image-caption pairs for AI datasets",
-  "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "description": "A VSCode extension for managing image-caption pairs in AI datasets with zoom/pan image viewing capabilities",
+  "version": "1.0.0",
+  "publisher": "lorenzo603",
+  "author": {
+    "name": "Lorenzo603"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lorenzo603/image-caption-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lorenzo603/image-caption-manager/issues"
+  },
+  "homepage": "https://github.com/Lorenzo603/image-caption-manager#readme",
+  "keywords": [
+    "image",
+    "caption",
+    "dataset",
+    "ai",
+    "machine learning",
+    "computer vision",
+    "annotation",
+    "labeling",
+    "viewer"
+  ],
   "engines": {
     "vscode": "^1.101.0"
   },
   "categories": [
+    "Data Science",
+    "Machine Learning",
+    "Visualization",
     "Other"
   ],
   "activationEvents": [
