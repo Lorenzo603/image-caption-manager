@@ -24,13 +24,13 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	
 	const nextCommand = vscode.commands.registerCommand('imageCaptionManager.next', async () => {
-		// This could be used for keyboard shortcuts
-		imageCaptionManager.openManager();
+		// Navigate to next image-caption pair
+		await imageCaptionManager.navigateNext();
 	});
 	
 	const previousCommand = vscode.commands.registerCommand('imageCaptionManager.previous', async () => {
-		// This could be used for keyboard shortcuts
-		imageCaptionManager.openManager();
+		// Navigate to previous image-caption pair
+		await imageCaptionManager.navigatePrevious();
 	});
 	
 	// Add commands to subscriptions

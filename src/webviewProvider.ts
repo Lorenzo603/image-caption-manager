@@ -907,11 +907,11 @@ export class WebviewProvider {
                         switch (e.key) {
                             case 'ArrowLeft':
                                 e.preventDefault();
-                                vscode.postMessage({ type: 'previous' });
+                                vscode.postMessage({ type: 'navigatePrevious' });
                                 break;
                             case 'ArrowRight':
                                 e.preventDefault();
-                                vscode.postMessage({ type: 'next' });
+                                vscode.postMessage({ type: 'navigateNext' });
                                 break;
                         }
                     }

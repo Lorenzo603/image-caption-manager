@@ -148,7 +148,7 @@ export class ImageCaptionManager {
     /**
      * Navigate to the next image-caption pair
      */
-    private async navigateNext(): Promise<void> {
+    public async navigateNext(): Promise<void> {
         if (this.state.currentIndex < this.state.pairs.length - 1) {
             this.state.currentIndex++;
             this.updateWebview();
@@ -158,7 +158,7 @@ export class ImageCaptionManager {
     /**
      * Navigate to the previous image-caption pair
      */
-    private async navigatePrevious(): Promise<void> {
+    public async navigatePrevious(): Promise<void> {
         if (this.state.currentIndex > 0) {
             this.state.currentIndex--;
             this.updateWebview();
