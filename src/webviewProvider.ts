@@ -197,24 +197,84 @@ export class WebviewProvider {
                     padding: 20px;
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
+                    min-height: 0;
+                }
+                
+                .image-controls {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 10px;
                     justify-content: center;
+                    align-items: center;
+                }
+                
+                .image-button {
+                    background-color: var(--vscode-button-secondaryBackground);
+                    color: var(--vscode-button-secondaryForeground);
+                    border: none;
+                    padding: 6px 12px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    transition: background-color 0.2s;
+                }
+                
+                .image-button:hover {
+                    background-color: var(--vscode-button-secondaryHoverBackground);
+                }
+                
+                .image-button:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+                
+                .zoom-level {
+                    font-size: 12px;
+                    color: var(--vscode-descriptionForeground);
+                    min-width: 50px;
+                    text-align: center;
                 }
                 
                 .image-container {
-                    max-width: 100%;
-                    max-height: 100%;
+                    flex: 1;
+                    position: relative;
+                    overflow: hidden;
+                    border-radius: 4px;
+                    background-color: var(--vscode-editor-background);
+                    border: 1px solid var(--vscode-panel-border);
+                    min-height: 300px;
+                    cursor: grab;
+                }
+                
+                .image-container:active {
+                    cursor: grabbing;
+                }
+                
+                .image-container.zoom-cursor {
+                    cursor: zoom-in;
+                }
+                
+                .image-viewport {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                 }
                 
                 .image-display {
-                    max-width: 100%;
-                    max-height: 70vh;
+                    max-width: none;
+                    max-height: none;
                     object-fit: contain;
                     border-radius: 4px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    user-select: none;
+                    pointer-events: none;
+                    transition: transform 0.2s ease;
                 }
                 
                 .image-info {
@@ -420,8 +480,17 @@ export class WebviewProvider {
                     const content = document.getElementById('content');
                     content.innerHTML = \`
                         <div class="image-panel">
-                            <div class="image-container">
-                                <img class="image-display" src="\${currentPair.imagePath}" alt="Image" />
+                            <div class="image-controls">
+                                <button class="image-button" id="zoomOutButton" onclick="zoomOut()">-</button>
+                                <span class="zoom-level" id="zoomLevel">100%</span>
+                                <button class="image-button" id="zoomInButton" onclick="zoomIn()">+</button>
+                                <button class="image-button" id="resetZoomButton" onclick="resetZoom()">Fit</button>
+                                <button class="image-button" id="actualSizeButton" onclick="actualSize()">1:1</button>
+                            </div>
+                            <div class="image-container" id="imageContainer">
+                                <div class="image-viewport" id="imageViewport">
+                                    <img class="image-display" id="imageDisplay" src="\${currentPair.imagePath}" alt="Image" />
+                                </div>
                             </div>
                             <div class="image-info">
                                 \${currentPair.baseName}
@@ -435,6 +504,9 @@ export class WebviewProvider {
                             </div>
                         </div>
                     \`;
+                    
+                    // Initialize image viewer
+                    initializeImageViewer();
                     
                     // Add event listener for caption changes
                     const captionEditor = document.getElementById('captionEditor');
@@ -523,6 +595,182 @@ export class WebviewProvider {
                 
                 function refresh() {
                     vscode.postMessage({ type: 'refresh' });
+                }
+                
+                // Image viewer functionality
+                let currentZoom = 1;
+                let panX = 0;
+                let panY = 0;
+                let isDragging = false;
+                let lastMouseX = 0;
+                let lastMouseY = 0;
+                let originalImageWidth = 0;
+                let originalImageHeight = 0;
+                
+                function initializeImageViewer() {
+                    const imageDisplay = document.getElementById('imageDisplay');
+                    const imageContainer = document.getElementById('imageContainer');
+                    const imageViewport = document.getElementById('imageViewport');
+                    
+                    if (!imageDisplay || !imageContainer || !imageViewport) return;
+                    
+                    // Wait for image to load to get dimensions
+                    imageDisplay.onload = () => {
+                        originalImageWidth = imageDisplay.naturalWidth;
+                        originalImageHeight = imageDisplay.naturalHeight;
+                        resetZoom();
+                    };
+                    
+                    // Mouse wheel zoom
+                    imageContainer.addEventListener('wheel', (e) => {
+                        e.preventDefault();
+                        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                        zoomToPoint(delta, e.clientX, e.clientY);
+                    });
+                    
+                    // Mouse drag panning
+                    imageContainer.addEventListener('mousedown', (e) => {
+                        if (e.button === 0) { // Left mouse button
+                            isDragging = true;
+                            lastMouseX = e.clientX;
+                            lastMouseY = e.clientY;
+                            imageContainer.style.cursor = 'grabbing';
+                        }
+                    });
+                    
+                    document.addEventListener('mousemove', (e) => {
+                        if (isDragging) {
+                            const deltaX = e.clientX - lastMouseX;
+                            const deltaY = e.clientY - lastMouseY;
+                            panX += deltaX;
+                            panY += deltaY;
+                            lastMouseX = e.clientX;
+                            lastMouseY = e.clientY;
+                            updateImageTransform();
+                        }
+                    });
+                    
+                    document.addEventListener('mouseup', () => {
+                        if (isDragging) {
+                            isDragging = false;
+                            imageContainer.style.cursor = 'grab';
+                        }
+                    });
+                    
+                    // Double-click to fit
+                    imageContainer.addEventListener('dblclick', (e) => {
+                        e.preventDefault();
+                        if (Math.abs(currentZoom - 1) < 0.1) {
+                            resetZoom();
+                        } else {
+                            actualSize();
+                        }
+                    });
+                    
+                    // Keyboard shortcuts for image
+                    document.addEventListener('keydown', (e) => {
+                        if (e.target.tagName === 'TEXTAREA') return; // Don't interfere with caption editing
+                        
+                        switch (e.key) {
+                            case '+':
+                            case '=':
+                                e.preventDefault();
+                                zoomIn();
+                                break;
+                            case '-':
+                                e.preventDefault();
+                                zoomOut();
+                                break;
+                            case '0':
+                                e.preventDefault();
+                                resetZoom();
+                                break;
+                            case '1':
+                                e.preventDefault();
+                                actualSize();
+                                break;
+                        }
+                    });
+                }
+                
+                function zoomIn() {
+                    currentZoom = Math.min(currentZoom * 1.2, 10);
+                    updateImageTransform();
+                    updateZoomLevel();
+                }
+                
+                function zoomOut() {
+                    currentZoom = Math.max(currentZoom / 1.2, 0.1);
+                    updateImageTransform();
+                    updateZoomLevel();
+                }
+                
+                function zoomToPoint(factor, mouseX, mouseY) {
+                    const imageContainer = document.getElementById('imageContainer');
+                    const rect = imageContainer.getBoundingClientRect();
+                    
+                    // Calculate mouse position relative to container
+                    const x = mouseX - rect.left;
+                    const y = mouseY - rect.top;
+                    
+                    // Calculate the point we're zooming to
+                    const beforeZoomX = (x - panX) / currentZoom;
+                    const beforeZoomY = (y - panY) / currentZoom;
+                    
+                    currentZoom = Math.max(0.1, Math.min(currentZoom * factor, 10));
+                    
+                    // Adjust pan to keep the zoom point in the same place
+                    panX = x - beforeZoomX * currentZoom;
+                    panY = y - beforeZoomY * currentZoom;
+                    
+                    updateImageTransform();
+                    updateZoomLevel();
+                }
+                
+                function resetZoom() {
+                    const imageContainer = document.getElementById('imageContainer');
+                    const imageDisplay = document.getElementById('imageDisplay');
+                    
+                    if (!imageContainer || !imageDisplay) return;
+                    
+                    const containerRect = imageContainer.getBoundingClientRect();
+                    const containerWidth = containerRect.width;
+                    const containerHeight = containerRect.height;
+                    
+                    if (originalImageWidth && originalImageHeight) {
+                        const scaleX = containerWidth / originalImageWidth;
+                        const scaleY = containerHeight / originalImageHeight;
+                        currentZoom = Math.min(scaleX, scaleY, 1);
+                    } else {
+                        currentZoom = 1;
+                    }
+                    
+                    panX = 0;
+                    panY = 0;
+                    updateImageTransform();
+                    updateZoomLevel();
+                }
+                
+                function actualSize() {
+                    currentZoom = 1;
+                    panX = 0;
+                    panY = 0;
+                    updateImageTransform();
+                    updateZoomLevel();
+                }
+                
+                function updateImageTransform() {
+                    const imageDisplay = document.getElementById('imageDisplay');
+                    if (imageDisplay) {
+                        imageDisplay.style.transform = \`translate(\${panX}px, \${panY}px) scale(\${currentZoom})\`;
+                    }
+                }
+                
+                function updateZoomLevel() {
+                    const zoomLevel = document.getElementById('zoomLevel');
+                    if (zoomLevel) {
+                        zoomLevel.textContent = \`\${Math.round(currentZoom * 100)}%\`;
+                    }
                 }
                 
                 // Keyboard shortcuts
