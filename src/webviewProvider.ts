@@ -440,6 +440,7 @@ export class WebviewProvider {
                 let currentIndex = 0;
                 let totalCount = 0;
                 let isDirty = false;
+                let isInitializingCaption = false;
                 
                 // Listen for messages from the extension
                 window.addEventListener('message', event => {
@@ -461,6 +462,9 @@ export class WebviewProvider {
                 function updateDisplay(payload) {
                     if (payload.currentPair) {
                         currentPair = payload.currentPair;
+                        // Reset flags when switching to a new pair
+                        isDirty = false;
+                        isInitializingCaption = true;
                         renderPair();
                     }
                     
@@ -508,6 +512,9 @@ export class WebviewProvider {
                         return;
                     }
                     
+                    // Mark that we're initializing a new caption
+                    isInitializingCaption = true;
+                    
                     const content = document.getElementById('content');
                     content.innerHTML = \`
                         <div class="image-panel">
@@ -545,13 +552,30 @@ export class WebviewProvider {
                     
                     // Add event listener for caption changes
                     const captionEditor = document.getElementById('captionEditor');
+                    
                     captionEditor.addEventListener('input', () => {
+                        // Don't send updates during initial rendering
+                        if (isInitializingCaption) {
+                            return;
+                        }
+                        
                         isDirty = true;
                         updateSaveButton();
+                        
+                        // Send update message to extension
+                        vscode.postMessage({
+                            type: 'updateCaption',
+                            payload: { caption: captionEditor.value }
+                        });
                     });
                     
                     // Add auto-save on blur
                     captionEditor.addEventListener('blur', () => {
+                        // Don't auto-save during initialization
+                        if (isInitializingCaption) {
+                            return;
+                        }
+                        
                         if (isDirty) {
                             saveCaption();
                         }
@@ -562,7 +586,9 @@ export class WebviewProvider {
                         captionEditor.focus();
                         // Move cursor to end of text
                         captionEditor.setSelectionRange(captionEditor.value.length, captionEditor.value.length);
-                    }, 100);
+                        // Mark initialization as complete after focusing
+                        isInitializingCaption = false;
+                    }, 150); // Increased timeout slightly
                     
                     isDirty = false;
                     updateSaveButton();
@@ -612,6 +638,9 @@ export class WebviewProvider {
                     if (isDirty) {
                         saveCaption();
                     }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
                     vscode.postMessage({ type: 'navigateNext' });
                 }
                 
@@ -619,6 +648,9 @@ export class WebviewProvider {
                     if (isDirty) {
                         saveCaption();
                     }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
                     vscode.postMessage({ type: 'navigatePrevious' });
                 }
                 

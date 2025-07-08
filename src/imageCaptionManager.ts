@@ -139,6 +139,12 @@ export class ImageCaptionManager {
                 }
                 break;
                 
+            case 'updateCaption':
+                if (message.payload && message.payload.caption !== undefined) {
+                    this.updateCaptionInState(message.payload.caption);
+                }
+                break;
+                
             case 'refresh':
                 await this.scanForPairs();
                 break;
@@ -149,6 +155,9 @@ export class ImageCaptionManager {
      * Navigate to the next image-caption pair
      */
     public async navigateNext(): Promise<void> {
+        // Auto-save current caption before navigating
+        await this.autoSaveCurrentCaption();
+        
         if (this.state.currentIndex < this.state.pairs.length - 1) {
             this.state.currentIndex++;
             this.updateWebview();
@@ -159,6 +168,9 @@ export class ImageCaptionManager {
      * Navigate to the previous image-caption pair
      */
     public async navigatePrevious(): Promise<void> {
+        // Auto-save current caption before navigating
+        await this.autoSaveCurrentCaption();
+        
         if (this.state.currentIndex > 0) {
             this.state.currentIndex--;
             this.updateWebview();
@@ -188,6 +200,27 @@ export class ImageCaptionManager {
             });
         } else {
             vscode.window.showErrorMessage(`Failed to save caption for ${currentPair.baseName}`);
+        }
+    }
+    
+    /**
+     * Auto-save the current caption if it has been modified
+     */
+    private async autoSaveCurrentCaption(): Promise<void> {
+        const currentPair = this.state.pairs[this.state.currentIndex];
+        
+        if (!currentPair || !currentPair.isDirty) {
+            return;
+        }
+        
+        // Save to file without showing notification message
+        const success = await FileSystemUtils.writeCaptionFile(currentPair.captionPath, currentPair.caption);
+        
+        if (success) {
+            currentPair.isDirty = false;
+            console.log(`Auto-saved caption for ${currentPair.baseName}`);
+        } else {
+            console.error(`Failed to auto-save caption for ${currentPair.baseName}`);
         }
     }
     
@@ -232,5 +265,20 @@ export class ImageCaptionManager {
         }
         this.webviewProvider.dispose();
         this.statusBarItem.dispose();
+    }
+    
+    /**
+     * Update the caption in the current state and mark as dirty
+     */
+    private updateCaptionInState(caption: string): void {
+        const currentPair = this.state.pairs[this.state.currentIndex];
+        
+        if (!currentPair) {
+            return;
+        }
+        
+        // Update the caption and mark as dirty
+        currentPair.caption = caption;
+        currentPair.isDirty = true;
     }
 }
