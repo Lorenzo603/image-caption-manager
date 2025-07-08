@@ -122,12 +122,12 @@ export class WebviewProvider {
                     color: var(--vscode-foreground);
                     background-color: var(--vscode-editor-background);
                     margin: 0;
-                    padding: 20px;
+                    padding: 10px;
                     box-sizing: border-box;
                 }
                 
                 .container {
-                    max-width: 1200px;
+                    width: 100%;
                     margin: 0 auto;
                     height: 100vh;
                     display: flex;
@@ -185,12 +185,13 @@ export class WebviewProvider {
                 .content {
                     flex: 1;
                     display: flex;
-                    gap: 20px;
+                    gap: 0;
                     min-height: 0;
+                    position: relative;
                 }
                 
                 .image-panel {
-                    flex: 1;
+                    flex: 2.5;
                     background-color: var(--vscode-panel-background);
                     border: 1px solid var(--vscode-panel-border);
                     border-radius: 8px;
@@ -198,6 +199,33 @@ export class WebviewProvider {
                     display: flex;
                     flex-direction: column;
                     min-height: 0;
+                    min-width: 300px;
+                    margin-right: 10px;
+                }
+                
+                .splitter {
+                    width: 10px;
+                    background-color: var(--vscode-panel-background);
+                    cursor: col-resize;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 4px;
+                    transition: background-color 0.2s;
+                }
+                
+                .splitter:hover {
+                    background-color: var(--vscode-button-secondaryHoverBackground);
+                }
+                
+                .splitter::before {
+                    content: '';
+                    width: 2px;
+                    height: 30px;
+                    background-color: var(--vscode-panel-border);
+                    border-radius: 1px;
+                    position: absolute;
                 }
                 
                 .image-controls {
@@ -286,12 +314,15 @@ export class WebviewProvider {
                 
                 .caption-panel {
                     flex: 1;
+                    max-width: none;
+                    min-width: 250px;
                     background-color: var(--vscode-panel-background);
                     border: 1px solid var(--vscode-panel-border);
                     border-radius: 8px;
                     padding: 20px;
                     display: flex;
                     flex-direction: column;
+                    margin-left: 10px;
                 }
                 
                 .caption-header {
@@ -496,6 +527,7 @@ export class WebviewProvider {
                                 \${currentPair.baseName}
                             </div>
                         </div>
+                        <div class="splitter" id="splitter"></div>
                         <div class="caption-panel">
                             <div class="caption-header">Caption</div>
                             <textarea class="caption-editor" id="captionEditor" placeholder="Enter caption for this image...">\${currentPair.caption}</textarea>
@@ -507,6 +539,9 @@ export class WebviewProvider {
                     
                     // Initialize image viewer
                     initializeImageViewer();
+                    
+                    // Initialize splitter
+                    initializeSplitter();
                     
                     // Add event listener for caption changes
                     const captionEditor = document.getElementById('captionEditor');
@@ -771,6 +806,77 @@ export class WebviewProvider {
                     if (zoomLevel) {
                         zoomLevel.textContent = \`\${Math.round(currentZoom * 100)}%\`;
                     }
+                }
+                
+                // Splitter functionality
+                function initializeSplitter() {
+                    const splitter = document.getElementById('splitter');
+                    const imagePanel = document.querySelector('.image-panel');
+                    const captionPanel = document.querySelector('.caption-panel');
+                    const content = document.getElementById('content');
+                    
+                    if (!splitter || !imagePanel || !captionPanel || !content) return;
+                    
+                    let isResizing = false;
+                    let startX = 0;
+                    let startImageWidth = 0;
+                    let startCaptionWidth = 0;
+                    
+                    splitter.addEventListener('mousedown', (e) => {
+                        isResizing = true;
+                        startX = e.clientX;
+                        
+                        const contentRect = content.getBoundingClientRect();
+                        const imageRect = imagePanel.getBoundingClientRect();
+                        const captionRect = captionPanel.getBoundingClientRect();
+                        
+                        startImageWidth = imageRect.width;
+                        startCaptionWidth = captionRect.width;
+                        
+                        document.body.style.cursor = 'col-resize';
+                        document.body.style.userSelect = 'none';
+                        
+                        e.preventDefault();
+                    });
+                    
+                    document.addEventListener('mousemove', (e) => {
+                        if (!isResizing) return;
+                        
+                        const deltaX = e.clientX - startX;
+                        const contentRect = content.getBoundingClientRect();
+                        const totalWidth = contentRect.width - 20; // Account for splitter width
+                        
+                        const newImageWidth = startImageWidth + deltaX;
+                        const newCaptionWidth = startCaptionWidth - deltaX;
+                        
+                        // Enforce minimum widths
+                        const minImageWidth = 300;
+                        const minCaptionWidth = 250;
+                        
+                        if (newImageWidth >= minImageWidth && newCaptionWidth >= minCaptionWidth) {
+                            const imageFlexBasis = (newImageWidth / totalWidth) * 100;
+                            const captionFlexBasis = (newCaptionWidth / totalWidth) * 100;
+                            
+                            imagePanel.style.flex = \`0 0 \${imageFlexBasis}%\`;
+                            captionPanel.style.flex = \`0 0 \${captionFlexBasis}%\`;
+                        }
+                        
+                        e.preventDefault();
+                    });
+                    
+                    document.addEventListener('mouseup', () => {
+                        if (isResizing) {
+                            isResizing = false;
+                            document.body.style.cursor = '';
+                            document.body.style.userSelect = '';
+                        }
+                    });
+                    
+                    // Double-click to reset to default proportions
+                    splitter.addEventListener('dblclick', () => {
+                        imagePanel.style.flex = '2.5';
+                        captionPanel.style.flex = '1';
+                    });
                 }
                 
                 // Keyboard shortcuts
