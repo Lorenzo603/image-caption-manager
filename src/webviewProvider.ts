@@ -691,12 +691,8 @@ export class WebviewProvider {
                     imageDisplay.onload = () => {
                         originalImageWidth = imageDisplay.naturalWidth;
                         originalImageHeight = imageDisplay.naturalHeight;
-                        // Initialize zoom to 1:1 without animation
-                        currentZoom = 1;
-                        panX = 0;
-                        panY = 0;
-                        updateImageTransform();
-                        updateZoomLevel();
+                        // Initialize zoom to fit the container
+                        resetZoom();
                     };
                     
                     // Mouse wheel zoom
