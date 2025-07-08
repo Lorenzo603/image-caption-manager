@@ -557,6 +557,13 @@ export class WebviewProvider {
                         }
                     });
                     
+                    // Focus the caption editor for immediate editing
+                    setTimeout(() => {
+                        captionEditor.focus();
+                        // Move cursor to end of text
+                        captionEditor.setSelectionRange(captionEditor.value.length, captionEditor.value.length);
+                    }, 100);
+                    
                     isDirty = false;
                     updateSaveButton();
                 }
