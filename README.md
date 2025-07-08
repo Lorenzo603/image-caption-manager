@@ -60,8 +60,8 @@ Search for "Image Caption Manager" in the VS Code Extensions marketplace.
 
 ### Navigation
 
-- **Next**: Click the "Next →" button or use `Ctrl+Alt+Right` (or `Cmd+Alt+Right` on Mac)
-- **Previous**: Click the "← Previous" button or use `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac)
+- **Next**: Click the "Next →" button or use `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac)
+- **Previous**: Click the "← Previous" button or use `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac)
 - **Save**: Click the "Save" button or use `Ctrl+S` (or `Cmd+S` on Mac)
 - **Refresh**: Click the "Refresh" button to rescan for new pairs
 
@@ -91,8 +91,8 @@ workspace/
 ## Keyboard Shortcuts
 
 - `Ctrl+Alt+I` (or `Cmd+Alt+I` on Mac) - Open Image Caption Manager
-- `Ctrl+Alt+Right` (or `Cmd+Alt+Right` on Mac) - Next image-caption pair
-- `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac) - Previous image-caption pair
+- `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac) - Next image-caption pair
+- `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac) - Previous image-caption pair
 - `Ctrl+S` (or `Cmd+S` on Mac) - Save current caption (when in the caption editor)
 
 ## Development

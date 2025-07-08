@@ -101,15 +101,15 @@
       },
       {
         "command": "imageCaptionManager.next",
-        "key": "ctrl+alt+right",
-        "mac": "cmd+alt+right",
-        "when": "workbenchState != empty"
+        "key": "ctrl+shift+right",
+        "mac": "cmd+shift+right",
+        "when": "workbenchState != empty && !editorTextFocus"
       },
       {
         "command": "imageCaptionManager.previous",
-        "key": "ctrl+alt+left",
-        "mac": "cmd+alt+left",
-        "when": "workbenchState != empty"
+        "key": "ctrl+shift+left",
+        "mac": "cmd+shift+left",
+        "when": "workbenchState != empty && !editorTextFocus"
       }
     ]
   },
