@@ -121,7 +121,7 @@ To run the extension in development mode:
 
 **Option 1: Local Installation from VSIX**
 1. Build the `.vsix` file using `vsce package`
-2. Install locally using `code --install-extension image-caption-manager-1.0.0.vsix`
+2. Install locally using `code --install-extension image-caption-manager-<version>.vsix`
 3. Or use VS Code's "Install from VSIX..." option in the Extensions view
 
 **Option 2: VS Code Marketplace**
@@ -152,6 +152,9 @@ MIT License - see LICENSE file for details
 For issues, feature requests, or questions, please visit the [GitHub repository](https://github.com/Lorenzo603/image-caption-manager).
 
 ## Changelog
+
+### 1.0.1
+- Usability improvements with keybindings
 
 ### 1.0.0
 - Initial release
