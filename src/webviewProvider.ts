@@ -302,7 +302,6 @@ export class WebviewProvider {
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     user-select: none;
                     pointer-events: none;
-                    transition: transform 0.2s ease;
                 }
                 
                 .image-info {
@@ -692,7 +691,12 @@ export class WebviewProvider {
                     imageDisplay.onload = () => {
                         originalImageWidth = imageDisplay.naturalWidth;
                         originalImageHeight = imageDisplay.naturalHeight;
-                        resetZoom();
+                        // Initialize zoom to 1:1 without animation
+                        currentZoom = 1;
+                        panX = 0;
+                        panY = 0;
+                        updateImageTransform();
+                        updateZoomLevel();
                     };
                     
                     // Mouse wheel zoom
