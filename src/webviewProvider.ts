@@ -164,6 +164,16 @@ export class WebviewProvider {
                     justify-content: center;
                 }
                 
+                .nav-group {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                }
+                
+                .nav-group + .nav-group {
+                    margin-left: 20px;
+                }
+                
                 .nav-button {
                     background-color: var(--vscode-button-background);
                     color: var(--vscode-button-foreground);
@@ -430,6 +440,10 @@ export class WebviewProvider {
                         gap: 6px;
                     }
                     
+                    .nav-group + .nav-group {
+                        margin-left: 12px;
+                    }
+                    
                     .nav-button {
                         padding: 4px 8px;
                         font-size: 12px;
@@ -445,13 +459,19 @@ export class WebviewProvider {
                         <div class="counter" id="counter">No pairs found</div>
                     </div>
                     <div class="navigation">
-                        <button class="nav-button" id="prev100Button" onclick="navigatePrevious100()">← -100</button>
-                        <button class="nav-button" id="prev10Button" onclick="navigatePrevious10()">← -10</button>
-                        <button class="nav-button" id="prevButton" onclick="navigatePrevious()">← Previous</button>
-                        <button class="nav-button" id="nextButton" onclick="navigateNext()">Next →</button>
-                        <button class="nav-button" id="next10Button" onclick="navigateNext10()">+10 →</button>
-                        <button class="nav-button" id="next100Button" onclick="navigateNext100()">+100 →</button>
-                        <button class="nav-button" id="refreshButton" onclick="refresh()">🔄 Refresh</button>
+                        <div class="nav-group">
+                            <button class="nav-button" id="prev100Button" onclick="navigatePrevious100()">← -100</button>
+                            <button class="nav-button" id="prev10Button" onclick="navigatePrevious10()">← -10</button>
+                            <button class="nav-button" id="prevButton" onclick="navigatePrevious()">← Previous</button>
+                        </div>
+                        <div class="nav-group">
+                            <button class="nav-button" id="nextButton" onclick="navigateNext()">Next →</button>
+                            <button class="nav-button" id="next10Button" onclick="navigateNext10()">+10 →</button>
+                            <button class="nav-button" id="next100Button" onclick="navigateNext100()">+100 →</button>
+                        </div>
+                        <div class="nav-group">
+                            <button class="nav-button" id="refreshButton" onclick="refresh()">🔄 Refresh</button>
+                        </div>
                     </div>
                 </div>
                 
