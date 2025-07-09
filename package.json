@@ -63,6 +63,26 @@
                 "command": "imageCaptionManager.previous",
                 "title": "Previous Image Caption Pair",
                 "category": "Image Caption Manager"
+            },
+            {
+                "command": "imageCaptionManager.next10",
+                "title": "Next 10 Image Caption Pairs",
+                "category": "Image Caption Manager"
+            },
+            {
+                "command": "imageCaptionManager.previous10",
+                "title": "Previous 10 Image Caption Pairs",
+                "category": "Image Caption Manager"
+            },
+            {
+                "command": "imageCaptionManager.next100",
+                "title": "Next 100 Image Caption Pairs",
+                "category": "Image Caption Manager"
+            },
+            {
+                "command": "imageCaptionManager.previous100",
+                "title": "Previous 100 Image Caption Pairs",
+                "category": "Image Caption Manager"
             }
         ],
         "menus": {
@@ -88,6 +108,22 @@
                 },
                 {
                     "command": "imageCaptionManager.previous",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.next10",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.previous10",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.next100",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.previous100",
                     "when": "workbenchState != empty"
                 }
             ]

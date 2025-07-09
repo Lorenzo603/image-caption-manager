@@ -31,7 +31,7 @@ export interface ImageCaptionManagerState {
 }
 
 export interface WebviewMessage {
-    type: 'navigateNext' | 'navigatePrevious' | 'saveCaption' | 'refresh' | 'updateCaption' | 'countTokens';
+    type: 'navigateNext' | 'navigatePrevious' | 'navigateNext10' | 'navigatePrevious10' | 'navigateNext100' | 'navigatePrevious100' | 'saveCaption' | 'refresh' | 'updateCaption' | 'countTokens';
     payload?: any;
 }
 

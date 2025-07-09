@@ -158,17 +158,20 @@ export class WebviewProvider {
                 
                 .navigation {
                     display: flex;
-                    gap: 10px;
+                    gap: 8px;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
                 }
                 
                 .nav-button {
                     background-color: var(--vscode-button-background);
                     color: var(--vscode-button-foreground);
                     border: none;
-                    padding: 8px 16px;
+                    padding: 6px 12px;
                     border-radius: 4px;
                     cursor: pointer;
-                    font-size: 14px;
+                    font-size: 13px;
                     transition: background-color 0.2s;
                 }
                 
@@ -424,6 +427,12 @@ export class WebviewProvider {
                     
                     .navigation {
                         justify-content: center;
+                        gap: 6px;
+                    }
+                    
+                    .nav-button {
+                        padding: 4px 8px;
+                        font-size: 12px;
                     }
                 }
             </style>
@@ -436,8 +445,12 @@ export class WebviewProvider {
                         <div class="counter" id="counter">No pairs found</div>
                     </div>
                     <div class="navigation">
+                        <button class="nav-button" id="prev100Button" onclick="navigatePrevious100()">← -100</button>
+                        <button class="nav-button" id="prev10Button" onclick="navigatePrevious10()">← -10</button>
                         <button class="nav-button" id="prevButton" onclick="navigatePrevious()">← Previous</button>
                         <button class="nav-button" id="nextButton" onclick="navigateNext()">Next →</button>
+                        <button class="nav-button" id="next10Button" onclick="navigateNext10()">+10 →</button>
+                        <button class="nav-button" id="next100Button" onclick="navigateNext100()">+100 →</button>
                         <button class="nav-button" id="refreshButton" onclick="refresh()">🔄 Refresh</button>
                     </div>
                 </div>
@@ -631,6 +644,10 @@ export class WebviewProvider {
                 function updateNavigationButtons() {
                     const prevButton = document.getElementById('prevButton');
                     const nextButton = document.getElementById('nextButton');
+                    const prev10Button = document.getElementById('prev10Button');
+                    const next10Button = document.getElementById('next10Button');
+                    const prev100Button = document.getElementById('prev100Button');
+                    const next100Button = document.getElementById('next100Button');
                     
                     if (prevButton) {
                         prevButton.disabled = currentIndex <= 0;
@@ -638,6 +655,22 @@ export class WebviewProvider {
                     
                     if (nextButton) {
                         nextButton.disabled = currentIndex >= totalCount - 1;
+                    }
+                    
+                    if (prev10Button) {
+                        prev10Button.disabled = currentIndex <= 0;
+                    }
+                    
+                    if (next10Button) {
+                        next10Button.disabled = currentIndex >= totalCount - 1;
+                    }
+                    
+                    if (prev100Button) {
+                        prev100Button.disabled = currentIndex <= 0;
+                    }
+                    
+                    if (next100Button) {
+                        next100Button.disabled = currentIndex >= totalCount - 1;
                     }
                 }
                 
@@ -710,6 +743,46 @@ export class WebviewProvider {
                     isDirty = false;
                     updateSaveButton();
                     vscode.postMessage({ type: 'navigatePrevious' });
+                }
+                
+                function navigateNext10() {
+                    if (isDirty) {
+                        saveCaption();
+                    }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
+                    vscode.postMessage({ type: 'navigateNext10' });
+                }
+                
+                function navigatePrevious10() {
+                    if (isDirty) {
+                        saveCaption();
+                    }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
+                    vscode.postMessage({ type: 'navigatePrevious10' });
+                }
+                
+                function navigateNext100() {
+                    if (isDirty) {
+                        saveCaption();
+                    }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
+                    vscode.postMessage({ type: 'navigateNext100' });
+                }
+                
+                function navigatePrevious100() {
+                    if (isDirty) {
+                        saveCaption();
+                    }
+                    // Reset dirty flag before navigation
+                    isDirty = false;
+                    updateSaveButton();
+                    vscode.postMessage({ type: 'navigatePrevious100' });
                 }
                 
                 function saveCaption() {

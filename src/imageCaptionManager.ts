@@ -134,6 +134,22 @@ export class ImageCaptionManager {
                 await this.navigatePrevious();
                 break;
                 
+            case 'navigateNext10':
+                await this.navigateNext(10);
+                break;
+                
+            case 'navigatePrevious10':
+                await this.navigatePrevious(10);
+                break;
+                
+            case 'navigateNext100':
+                await this.navigateNext(100);
+                break;
+                
+            case 'navigatePrevious100':
+                await this.navigatePrevious(100);
+                break;
+                
             case 'saveCaption':
                 if (message.payload && message.payload.caption !== undefined) {
                     await this.saveCaption(message.payload.caption);
@@ -165,12 +181,13 @@ export class ImageCaptionManager {
     /**
      * Navigate to the next image-caption pair
      */
-    public async navigateNext(): Promise<void> {
+    public async navigateNext(step: number = 1): Promise<void> {
         // Auto-save current caption before navigating
         await this.autoSaveCurrentCaption();
         
-        if (this.state.currentIndex < this.state.pairs.length - 1) {
-            this.state.currentIndex++;
+        const newIndex = Math.min(this.state.currentIndex + step, this.state.pairs.length - 1);
+        if (newIndex !== this.state.currentIndex) {
+            this.state.currentIndex = newIndex;
             this.updateWebview();
         }
     }
@@ -178,12 +195,13 @@ export class ImageCaptionManager {
     /**
      * Navigate to the previous image-caption pair
      */
-    public async navigatePrevious(): Promise<void> {
+    public async navigatePrevious(step: number = 1): Promise<void> {
         // Auto-save current caption before navigating
         await this.autoSaveCurrentCaption();
         
-        if (this.state.currentIndex > 0) {
-            this.state.currentIndex--;
+        const newIndex = Math.max(this.state.currentIndex - step, 0);
+        if (newIndex !== this.state.currentIndex) {
+            this.state.currentIndex = newIndex;
             this.updateWebview();
         }
     }

@@ -65,6 +65,8 @@ Search for "Image Caption Manager" in the VS Code Extensions marketplace.
 
 - **Next**: Click the "Next →" button or use `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac)
 - **Previous**: Click the "← Previous" button or use `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac)
+- **Jump Forward**: Click "+10 →" to jump 10 pairs forward, or "+100 →" to jump 100 pairs forward
+- **Jump Backward**: Click "← -10" to jump 10 pairs backward, or "← -100" to jump 100 pairs backward
 - **Save**: Click the "Save" button or use `Ctrl+S` (or `Cmd+S` on Mac)
 - **Refresh**: Click the "Refresh" button to rescan for new pairs
 
@@ -90,6 +92,10 @@ workspace/
 - `Image Caption Manager: Refresh Image Caption Pairs` - Refreshes the list of pairs
 - `Image Caption Manager: Next Image Caption Pair` - Navigate to next pair
 - `Image Caption Manager: Previous Image Caption Pair` - Navigate to previous pair
+- `Image Caption Manager: Next 10 Image Caption Pairs` - Jump 10 pairs forward
+- `Image Caption Manager: Previous 10 Image Caption Pairs` - Jump 10 pairs backward
+- `Image Caption Manager: Next 100 Image Caption Pairs` - Jump 100 pairs forward
+- `Image Caption Manager: Previous 100 Image Caption Pairs` - Jump 100 pairs backward
 
 ## Keyboard Shortcuts
 
@@ -154,8 +160,9 @@ For issues, feature requests, or questions, please visit the [GitHub repository]
 ## Changelog
 
 ### 1.0.2
-- Added token counter
+- Added token counter with GPT tokenization
 - Fixed double keybindings bug
+- Added jump navigation: +10/-10 and +100/-100 buttons for faster navigation through large datasets
 
 ### 1.0.1
 - Usability improvements with keybindings

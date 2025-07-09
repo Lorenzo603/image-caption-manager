@@ -33,11 +33,35 @@ export function activate(context: vscode.ExtensionContext) {
 		await imageCaptionManager.navigatePrevious();
 	});
 	
+	const next10Command = vscode.commands.registerCommand('imageCaptionManager.next10', async () => {
+		// Navigate to next 10 image-caption pairs
+		await imageCaptionManager.navigateNext(10);
+	});
+	
+	const previous10Command = vscode.commands.registerCommand('imageCaptionManager.previous10', async () => {
+		// Navigate to previous 10 image-caption pairs
+		await imageCaptionManager.navigatePrevious(10);
+	});
+	
+	const next100Command = vscode.commands.registerCommand('imageCaptionManager.next100', async () => {
+		// Navigate to next 100 image-caption pairs
+		await imageCaptionManager.navigateNext(100);
+	});
+	
+	const previous100Command = vscode.commands.registerCommand('imageCaptionManager.previous100', async () => {
+		// Navigate to previous 100 image-caption pairs
+		await imageCaptionManager.navigatePrevious(100);
+	});
+	
 	// Add commands to subscriptions
 	context.subscriptions.push(openCommand);
 	context.subscriptions.push(refreshCommand);
 	context.subscriptions.push(nextCommand);
 	context.subscriptions.push(previousCommand);
+	context.subscriptions.push(next10Command);
+	context.subscriptions.push(previous10Command);
+	context.subscriptions.push(next100Command);
+	context.subscriptions.push(previous100Command);
 	
 	// Initialize the manager
 	imageCaptionManager.initialize().catch(error => {
