@@ -378,11 +378,15 @@ export class WebviewProvider {
                 
                 .token-counter {
                     font-size: 12px;
-                    color: var(--vscode-descriptionForeground);
-                    padding: 4px 8px;
-                    background-color: var(--vscode-badge-background);
+                    color: var(--vscode-button-secondaryForeground);
+                    background-color: var(--vscode-button-secondaryBackground);
+                    padding: 6px 12px;
                     border-radius: 12px;
                     border: 1px solid var(--vscode-badge-foreground);
+                    font-weight: 500;
+                    min-width: 60px;
+                    text-align: center;
+                    user-select: none;
                 }
                 
                 .no-data {
