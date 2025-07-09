@@ -699,7 +699,13 @@ export class WebviewProvider {
                     imageContainer.addEventListener('wheel', (e) => {
                         e.preventDefault();
                         const delta = e.deltaY > 0 ? 0.9 : 1.1;
-                        zoomToPoint(delta, e.clientX, e.clientY);
+                        
+                        // Get mouse position relative to the image container
+                        const rect = imageContainer.getBoundingClientRect();
+                        const mouseX = e.clientX - rect.width / 2;
+                        const mouseY = e.clientY - rect.height / 2;
+                        
+                        zoomToPoint(delta, mouseX, mouseY);
                     });
                     
                     // Mouse drag panning
@@ -780,22 +786,18 @@ export class WebviewProvider {
                 }
                 
                 function zoomToPoint(factor, mouseX, mouseY) {
-                    const imageContainer = document.getElementById('imageContainer');
-                    const rect = imageContainer.getBoundingClientRect();
+                    // mouseX and mouseY should already be relative to the container
+                    // Calculate the point we're zooming to in image space
+                    const beforeZoomX = (mouseX - panX) / currentZoom;
+                    const beforeZoomY = (mouseY - panY) / currentZoom;
                     
-                    // Calculate mouse position relative to container
-                    const x = mouseX - rect.left;
-                    const y = mouseY - rect.top;
-                    
-                    // Calculate the point we're zooming to
-                    const beforeZoomX = (x - panX) / currentZoom;
-                    const beforeZoomY = (y - panY) / currentZoom;
-                    
-                    currentZoom = Math.max(0.1, Math.min(currentZoom * factor, 10));
+                    const newZoom = Math.max(0.1, Math.min(currentZoom * factor, 10));
                     
                     // Adjust pan to keep the zoom point in the same place
-                    panX = x - beforeZoomX * currentZoom;
-                    panY = y - beforeZoomY * currentZoom;
+                    panX = mouseX - beforeZoomX * newZoom;
+                    panY = mouseY - beforeZoomY * newZoom;
+                    
+                    currentZoom = newZoom;
                     
                     updateImageTransform();
                     updateZoomLevel();
