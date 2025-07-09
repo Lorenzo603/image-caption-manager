@@ -1,150 +1,150 @@
 {
-  "name": "image-caption-manager",
-  "displayName": "Image Caption Manager",
-  "description": "A VSCode extension for managing image-caption pairs in AI datasets with zoom/pan image viewing capabilities",
-  "version": "1.0.1",
-  "publisher": "lorenzo603",
-  "author": {
-    "name": "Lorenzo603"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Lorenzo603/image-caption-manager.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Lorenzo603/image-caption-manager/issues"
-  },
-  "homepage": "https://github.com/Lorenzo603/image-caption-manager#readme",
-  "keywords": [
-    "image",
-    "caption",
-    "dataset",
-    "ai",
-    "machine learning",
-    "computer vision",
-    "annotation",
-    "labeling",
-    "viewer"
-  ],
-  "engines": {
-    "vscode": "^1.101.0"
-  },
-  "categories": [
-    "Data Science",
-    "Machine Learning",
-    "Visualization",
-    "Other"
-  ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "imageCaptionManager.open",
-        "title": "Open Image Caption Manager",
-        "category": "Image Caption Manager",
-        "icon": "$(image)"
-      },
-      {
-        "command": "imageCaptionManager.refresh",
-        "title": "Refresh Image Caption Pairs",
-        "category": "Image Caption Manager",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "imageCaptionManager.next",
-        "title": "Next Image Caption Pair",
-        "category": "Image Caption Manager"
-      },
-      {
-        "command": "imageCaptionManager.previous",
-        "title": "Previous Image Caption Pair",
-        "category": "Image Caption Manager"
-      }
-    ],
-    "menus": {
-      "explorer/context": [
-        {
-          "command": "imageCaptionManager.open",
-          "when": "explorerResourceIsFolder",
-          "group": "navigation@1"
-        }
-      ],
-      "commandPalette": [
-        {
-          "command": "imageCaptionManager.open",
-          "when": "workbenchState != empty"
-        },
-        {
-          "command": "imageCaptionManager.refresh",
-          "when": "workbenchState != empty"
-        },
-        {
-          "command": "imageCaptionManager.next",
-          "when": "workbenchState != empty"
-        },
-        {
-          "command": "imageCaptionManager.previous",
-          "when": "workbenchState != empty"
-        }
-      ]
+    "name": "image-caption-manager",
+    "displayName": "Image Caption Manager",
+    "description": "A VSCode extension for managing image-caption pairs in AI datasets with zoom/pan image viewing capabilities",
+    "version": "1.0.2",
+    "publisher": "lorenzo603",
+    "author": {
+        "name": "Lorenzo603"
     },
-    "keybindings": [
-      {
-        "command": "imageCaptionManager.open",
-        "key": "ctrl+alt+i",
-        "mac": "cmd+alt+i",
-        "when": "workbenchState != empty"
-      },
-      {
-        "command": "imageCaptionManager.next",
-        "key": "ctrl+shift+right",
-        "mac": "cmd+shift+right",
-        "when": "workbenchState != empty && !editorTextFocus"
-      },
-      {
-        "command": "imageCaptionManager.previous",
-        "key": "ctrl+shift+left",
-        "mac": "cmd+shift+left",
-        "when": "workbenchState != empty && !editorTextFocus"
-      },
-      {
-        "command": "imageCaptionManager.refresh",
-        "key": "ctrl+r",
-        "mac": "cmd+r",
-        "when": "workbenchState != empty && !editorTextFocus"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
-    "@types/vscode": "^1.101.0",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2",
-    "eslint": "^9.25.1",
-    "ts-loader": "^9.5.2",
-    "typescript": "^5.8.3",
-    "webpack": "^5.99.7",
-    "webpack-cli": "^6.0.1"
-  },
-  "dependencies": {
-    "tiktoken": "^1.0.21"
-  }
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Lorenzo603/image-caption-manager.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Lorenzo603/image-caption-manager/issues"
+    },
+    "homepage": "https://github.com/Lorenzo603/image-caption-manager#readme",
+    "keywords": [
+        "image",
+        "caption",
+        "dataset",
+        "ai",
+        "machine learning",
+        "computer vision",
+        "annotation",
+        "labeling",
+        "viewer"
+    ],
+    "engines": {
+        "vscode": "^1.101.0"
+    },
+    "categories": [
+        "Data Science",
+        "Machine Learning",
+        "Visualization",
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "imageCaptionManager.open",
+                "title": "Open Image Caption Manager",
+                "category": "Image Caption Manager",
+                "icon": "$(image)"
+            },
+            {
+                "command": "imageCaptionManager.refresh",
+                "title": "Refresh Image Caption Pairs",
+                "category": "Image Caption Manager",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "imageCaptionManager.next",
+                "title": "Next Image Caption Pair",
+                "category": "Image Caption Manager"
+            },
+            {
+                "command": "imageCaptionManager.previous",
+                "title": "Previous Image Caption Pair",
+                "category": "Image Caption Manager"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "imageCaptionManager.open",
+                    "when": "explorerResourceIsFolder",
+                    "group": "navigation@1"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "imageCaptionManager.open",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.refresh",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.next",
+                    "when": "workbenchState != empty"
+                },
+                {
+                    "command": "imageCaptionManager.previous",
+                    "when": "workbenchState != empty"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "imageCaptionManager.open",
+                "key": "ctrl+alt+i",
+                "mac": "cmd+alt+i",
+                "when": "workbenchState != empty"
+            },
+            {
+                "command": "imageCaptionManager.next",
+                "key": "ctrl+shift+right",
+                "mac": "cmd+shift+right",
+                "when": "workbenchState != empty && !editorTextFocus"
+            },
+            {
+                "command": "imageCaptionManager.previous",
+                "key": "ctrl+shift+left",
+                "mac": "cmd+shift+left",
+                "when": "workbenchState != empty && !editorTextFocus"
+            },
+            {
+                "command": "imageCaptionManager.refresh",
+                "key": "ctrl+r",
+                "mac": "cmd+r",
+                "when": "workbenchState != empty && !editorTextFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "lint": "eslint src",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.10",
+        "@types/node": "20.x",
+        "@types/vscode": "^1.101.0",
+        "@typescript-eslint/eslint-plugin": "^8.31.1",
+        "@typescript-eslint/parser": "^8.31.1",
+        "@vscode/test-cli": "^0.0.11",
+        "@vscode/test-electron": "^2.5.2",
+        "eslint": "^9.25.1",
+        "ts-loader": "^9.5.2",
+        "typescript": "^5.8.3",
+        "webpack": "^5.99.7",
+        "webpack-cli": "^6.0.1"
+    },
+    "dependencies": {
+        "tiktoken": "^1.0.21"
+    }
 }

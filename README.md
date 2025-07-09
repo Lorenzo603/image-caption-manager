@@ -153,6 +153,10 @@ For issues, feature requests, or questions, please visit the [GitHub repository]
 
 ## Changelog
 
+### 1.0.2
+- Added token counter
+- Fixed double keybindings bug
+
 ### 1.0.1
 - Usability improvements with keybindings
 
