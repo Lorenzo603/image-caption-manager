@@ -934,19 +934,8 @@ export class WebviewProvider {
                         }
                     }
                     
-                    // Navigation shortcuts (Ctrl+Shift+Arrow or Cmd+Shift+Arrow)
-                    if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                        switch (e.key) {
-                            case 'ArrowLeft':
-                                e.preventDefault();
-                                vscode.postMessage({ type: 'navigatePrevious' });
-                                break;
-                            case 'ArrowRight':
-                                e.preventDefault();
-                                vscode.postMessage({ type: 'navigateNext' });
-                                break;
-                        }
-                    }
+                    // Navigation shortcuts are handled by VS Code global commands
+                    // Removed webview navigation handlers to prevent double-triggering
                 });
             </script>
         </body>
