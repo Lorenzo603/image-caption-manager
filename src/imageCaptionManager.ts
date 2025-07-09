@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ImageCaptionPair, ImageCaptionManagerState, WebviewMessage } from './types';
 import { FileSystemUtils } from './fileSystemUtils';
 import { WebviewProvider } from './webviewProvider';
-import { Tiktoken, get_encoding } from 'tiktoken';
+import { encode } from 'gpt-tokenizer';
 
 /**
  * Main class for managing image-caption pairs
@@ -12,7 +12,6 @@ export class ImageCaptionManager {
     private webviewProvider: WebviewProvider;
     private fileWatcher: vscode.FileSystemWatcher | undefined;
     private statusBarItem: vscode.StatusBarItem;
-    private tokenizer: Tiktoken;
     
     constructor(private context: vscode.ExtensionContext) {
         this.state = {
@@ -20,9 +19,6 @@ export class ImageCaptionManager {
             currentIndex: 0,
             rootFolder: ''
         };
-        
-        // Initialize tiktoken encoder for GPT-4 (cl100k_base encoding)
-        this.tokenizer = get_encoding('cl100k_base');
         
         this.webviewProvider = new WebviewProvider(context);
         this.webviewProvider.setMessageCallback(this.handleWebviewMessage.bind(this));
@@ -280,11 +276,6 @@ export class ImageCaptionManager {
         }
         this.webviewProvider.dispose();
         this.statusBarItem.dispose();
-        
-        // Clean up tokenizer
-        if (this.tokenizer) {
-            this.tokenizer.free();
-        }
     }
     
     /**
@@ -303,7 +294,7 @@ export class ImageCaptionManager {
     }
     
     /**
-     * Count tokens in the given text using tiktoken
+     * Count tokens in the given text using gpt-tokenizer
      */
     private countTokens(text: string): number {
         if (!text || text.trim().length === 0) {
@@ -311,7 +302,7 @@ export class ImageCaptionManager {
         }
         
         try {
-            const tokens = this.tokenizer.encode(text);
+            const tokens = encode(text);
             return tokens.length;
         } catch (error) {
             console.error('Error counting tokens:', error);
