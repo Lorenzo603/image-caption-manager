@@ -353,6 +353,8 @@ export class WebviewProvider {
                     margin-top: 15px;
                     display: flex;
                     gap: 10px;
+                    align-items: center;
+                    justify-content: space-between;
                 }
                 
                 .save-button {
@@ -372,6 +374,15 @@ export class WebviewProvider {
                 .save-button.saved {
                     background-color: var(--vscode-button-secondaryBackground);
                     color: var(--vscode-button-secondaryForeground);
+                }
+                
+                .token-counter {
+                    font-size: 12px;
+                    color: var(--vscode-descriptionForeground);
+                    padding: 4px 8px;
+                    background-color: var(--vscode-badge-background);
+                    border-radius: 12px;
+                    border: 1px solid var(--vscode-badge-foreground);
                 }
                 
                 .no-data {
@@ -454,6 +465,9 @@ export class WebviewProvider {
                             break;
                         case 'updateList':
                             updateList(message.payload);
+                            break;
+                        case 'tokenCount':
+                            updateTokenCountDisplay(message.payload.count);
                             break;
                     }
                 });
@@ -539,6 +553,7 @@ export class WebviewProvider {
                             <textarea class="caption-editor" id="captionEditor" placeholder="Enter caption for this image...">\${currentPair.caption}</textarea>
                             <div class="caption-actions">
                                 <button class="save-button" id="saveButton" onclick="saveCaption()">Save</button>
+                                <span class="token-counter" id="tokenCounter">0 tokens</span>
                             </div>
                         </div>
                     \`;
@@ -560,6 +575,7 @@ export class WebviewProvider {
                         
                         isDirty = true;
                         updateSaveButton();
+                        updateTokenCounter(captionEditor.value);
                         
                         // Send update message to extension
                         vscode.postMessage({
@@ -591,6 +607,7 @@ export class WebviewProvider {
                     
                     isDirty = false;
                     updateSaveButton();
+                    updateTokenCounter(currentPair.caption);
                 }
                 
                 function showNoData() {
@@ -630,6 +647,44 @@ export class WebviewProvider {
                             saveButton.textContent = 'Saved';
                             saveButton.className = 'save-button saved';
                         }
+                    }
+                }
+                
+                function updateTokenCounter(text) {
+                    const tokenCounter = document.getElementById('tokenCounter');
+                    if (tokenCounter) {
+                        // Simple token estimation (GPT-style tokenization approximation)
+                        // More accurate counting will be done on the extension side
+                        const estimatedTokens = estimateTokenCount(text);
+                        tokenCounter.textContent = \`\${estimatedTokens} tokens\`;
+                        
+                        // Request accurate token count from extension
+                        vscode.postMessage({
+                            type: 'countTokens',
+                            payload: { text: text }
+                        });
+                    }
+                }
+                
+                function estimateTokenCount(text) {
+                    if (!text || text.trim().length === 0) {
+                        return 0;
+                    }
+                    
+                    // Simple estimation: roughly 1 token per 4 characters for English text
+                    // This is an approximation, the actual count from tiktoken will be more accurate
+                    const words = text.trim().split(/\s+/).length;
+                    const chars = text.length;
+                    
+                    // Estimate based on a combination of word count and character count
+                    // GPT tokenizers typically produce ~1.3-1.5 tokens per word for English
+                    return Math.max(1, Math.round(words * 1.3));
+                }
+                
+                function updateTokenCountDisplay(count) {
+                    const tokenCounter = document.getElementById('tokenCounter');
+                    if (tokenCounter) {
+                        tokenCounter.textContent = \`\${count} tokens\`;
                     }
                 }
                 

@@ -31,17 +31,18 @@ export interface ImageCaptionManagerState {
 }
 
 export interface WebviewMessage {
-    type: 'navigateNext' | 'navigatePrevious' | 'saveCaption' | 'refresh' | 'updateCaption';
+    type: 'navigateNext' | 'navigatePrevious' | 'saveCaption' | 'refresh' | 'updateCaption' | 'countTokens';
     payload?: any;
 }
 
 export interface WebviewStateUpdate {
-    type: 'updatePair' | 'updateIndex' | 'updateList';
+    type: 'updatePair' | 'updateIndex' | 'updateList' | 'tokenCount';
     payload: {
         currentPair?: ImageCaptionPair;
         currentIndex?: number;
         totalCount?: number;
         pairs?: ImageCaptionPair[];
+        count?: number;
     };
 }
 

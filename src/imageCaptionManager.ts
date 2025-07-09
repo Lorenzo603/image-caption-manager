@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ImageCaptionPair, ImageCaptionManagerState, WebviewMessage } from './types';
 import { FileSystemUtils } from './fileSystemUtils';
 import { WebviewProvider } from './webviewProvider';
+import { Tiktoken, get_encoding } from 'tiktoken';
 
 /**
  * Main class for managing image-caption pairs
@@ -11,6 +12,7 @@ export class ImageCaptionManager {
     private webviewProvider: WebviewProvider;
     private fileWatcher: vscode.FileSystemWatcher | undefined;
     private statusBarItem: vscode.StatusBarItem;
+    private tokenizer: Tiktoken;
     
     constructor(private context: vscode.ExtensionContext) {
         this.state = {
@@ -18,6 +20,9 @@ export class ImageCaptionManager {
             currentIndex: 0,
             rootFolder: ''
         };
+        
+        // Initialize tiktoken encoder for GPT-4 (cl100k_base encoding)
+        this.tokenizer = get_encoding('cl100k_base');
         
         this.webviewProvider = new WebviewProvider(context);
         this.webviewProvider.setMessageCallback(this.handleWebviewMessage.bind(this));
@@ -148,6 +153,16 @@ export class ImageCaptionManager {
             case 'refresh':
                 await this.scanForPairs();
                 break;
+                
+            case 'countTokens':
+                if (message.payload && message.payload.text !== undefined) {
+                    const tokenCount = this.countTokens(message.payload.text);
+                    this.webviewProvider.updateWebview({
+                        type: 'tokenCount',
+                        payload: { count: tokenCount }
+                    });
+                }
+                break;
         }
     }
     
@@ -265,6 +280,11 @@ export class ImageCaptionManager {
         }
         this.webviewProvider.dispose();
         this.statusBarItem.dispose();
+        
+        // Clean up tokenizer
+        if (this.tokenizer) {
+            this.tokenizer.free();
+        }
     }
     
     /**
@@ -280,5 +300,24 @@ export class ImageCaptionManager {
         // Update the caption and mark as dirty
         currentPair.caption = caption;
         currentPair.isDirty = true;
+    }
+    
+    /**
+     * Count tokens in the given text using tiktoken
+     */
+    private countTokens(text: string): number {
+        if (!text || text.trim().length === 0) {
+            return 0;
+        }
+        
+        try {
+            const tokens = this.tokenizer.encode(text);
+            return tokens.length;
+        } catch (error) {
+            console.error('Error counting tokens:', error);
+            // Fallback to simple estimation
+            const words = text.trim().split(/\s+/).length;
+            return Math.max(1, Math.round(words * 1.3));
+        }
     }
 }
