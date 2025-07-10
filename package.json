@@ -2,7 +2,7 @@
     "name": "image-caption-manager",
     "displayName": "Image Caption Manager",
     "description": "A VSCode extension for managing image-caption pairs in AI datasets with zoom/pan image viewing capabilities",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "lorenzo603",
     "author": {
         "name": "Lorenzo603"

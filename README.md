@@ -159,6 +159,9 @@ For issues, feature requests, or questions, please visit the [GitHub repository]
 
 ## Changelog
 
+### 1.0.3
+- Major bugfixes (image loading)
+
 ### 1.0.2
 - Added token counter with GPT tokenization
 - Fixed double keybindings bug
