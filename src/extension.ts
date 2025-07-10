@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	
 	const refreshCommand = vscode.commands.registerCommand('imageCaptionManager.refresh', async () => {
-		await imageCaptionManager.initialize();
+		await imageCaptionManager.rescanPairs();
 		// Notification disabled: vscode.window.showInformationMessage('Image-caption pairs refreshed');
 	});
 	

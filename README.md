@@ -9,7 +9,7 @@ A Visual Studio Code extension for managing image-caption pairs for AI datasets.
 - **Advanced Image Viewer**: Professional image viewing with zoom, pan, and fit-to-window capabilities
 - **Navigation Controls**: Navigate between image-caption pairs with next/previous buttons
 - **Live Editing**: Edit captions directly in the interface with auto-save functionality
-- **File Watching**: Automatically detects new image-caption pairs or changes to existing ones
+- **Manual Refresh**: Use the refresh button or keyboard shortcut to rescan for new image-caption pairs
 - **Keyboard Shortcuts**: Use keyboard shortcuts for quick navigation and saving
 - **Status Bar Integration**: Shows the number of pairs found in the status bar
 

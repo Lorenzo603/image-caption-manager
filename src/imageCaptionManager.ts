@@ -10,7 +10,6 @@ import { encode } from 'gpt-tokenizer';
 export class ImageCaptionManager {
     private state: ImageCaptionManagerState;
     private webviewProvider: WebviewProvider;
-    private fileWatcher: vscode.FileSystemWatcher | undefined;
     private statusBarItem: vscode.StatusBarItem;
     
     constructor(private context: vscode.ExtensionContext) {
@@ -50,10 +49,7 @@ export class ImageCaptionManager {
         
         this.state.rootFolder = workspaceFolder;
         
-        // Set up file watcher
-        this.setupFileWatcher();
-        
-        // Initial scan
+        // Initial scan only - no file watcher to avoid jarring refreshes
         await this.scanForPairs();
         
         // Update status bar
@@ -67,15 +63,14 @@ export class ImageCaptionManager {
         this.webviewProvider.createOrShow();
         this.updateWebview();
     }
-    
-    /**
+     /**
      * Scan for image-caption pairs in the workspace
      */
     private async scanForPairs(): Promise<void> {
         if (!this.state.rootFolder) {
             return;
         }
-        
+
         try {
             const pairs = await FileSystemUtils.scanForImageCaptionPairs(this.state.rootFolder);
             this.state.pairs = pairs;
@@ -95,30 +90,12 @@ export class ImageCaptionManager {
             vscode.window.showErrorMessage('Error scanning for image-caption pairs: ' + error);
         }
     }
-    
+
     /**
-     * Set up file system watcher
+     * Manually rescan for image-caption pairs (called by refresh command)
      */
-    private setupFileWatcher(): void {
-        if (this.fileWatcher) {
-            this.fileWatcher.dispose();
-        }
-        
-        if (!this.state.rootFolder) {
-            return;
-        }
-        
-        this.fileWatcher = FileSystemUtils.createFileWatcher(
-            this.state.rootFolder,
-            () => {
-                // Debounce the scan to avoid excessive updates
-                setTimeout(() => {
-                    this.scanForPairs();
-                }, 1000);
-            }
-        );
-        
-        this.context.subscriptions.push(this.fileWatcher);
+    public async rescanPairs(): Promise<void> {
+        await this.scanForPairs();
     }
     
     /**
@@ -163,7 +140,7 @@ export class ImageCaptionManager {
                 break;
                 
             case 'refresh':
-                await this.scanForPairs();
+                await this.rescanPairs();
                 break;
                 
             case 'countTokens':
@@ -287,9 +264,6 @@ export class ImageCaptionManager {
      * Dispose of resources
      */
     public dispose(): void {
-        if (this.fileWatcher) {
-            this.fileWatcher.dispose();
-        }
         this.webviewProvider.dispose();
         this.statusBarItem.dispose();
     }
