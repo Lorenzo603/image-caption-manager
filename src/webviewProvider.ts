@@ -72,9 +72,13 @@ export class WebviewProvider {
         
         if (update.type === 'updatePair' && update.payload.currentPair) {
             this.currentPair = update.payload.currentPair;
-            // Convert image path to webview URI
+            // Convert image path to webview URI but don't modify the original object
             const imageUri = this.panel.webview.asWebviewUri(vscode.Uri.file(this.currentPair.imagePath));
-            this.currentPair.imagePath = imageUri.toString();
+            // Create a copy with the webview URI for the payload
+            update.payload.currentPair = {
+                ...this.currentPair,
+                imagePath: imageUri.toString()
+            };
         }
         
         if (update.payload.currentIndex !== undefined) {
@@ -566,6 +570,7 @@ export class WebviewProvider {
                     isInitializingCaption = true;
                     
                     const content = document.getElementById('content');
+                    console.log('Rendering pair:', currentPair.baseName, 'with imagePath:', currentPair.imagePath);
                     content.innerHTML = \`
                         <div class="image-panel">
                             <div class="image-controls">
@@ -839,12 +844,18 @@ export class WebviewProvider {
                     
                     if (!imageDisplay || !imageContainer || !imageViewport) return;
                     
-                    // Wait for image to load to get dimensions
+                    // Add debugging for image loading
                     imageDisplay.onload = () => {
+                        console.log('Image loaded successfully:', imageDisplay.src);
                         originalImageWidth = imageDisplay.naturalWidth;
                         originalImageHeight = imageDisplay.naturalHeight;
                         // Initialize zoom to fit the container
                         resetZoom();
+                    };
+                    
+                    imageDisplay.onerror = () => {
+                        console.error('Failed to load image:', imageDisplay.src);
+                        console.error('Image alt text:', imageDisplay.alt);
                     };
                     
                     // Mouse wheel zoom
