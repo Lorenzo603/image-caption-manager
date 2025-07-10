@@ -224,9 +224,7 @@ export class ImageCaptionManager {
         const success = await FileSystemUtils.writeCaptionFile(currentPair.captionPath, caption);
         
         if (success) {
-            vscode.window.showInformationMessage(`Caption saved for ${currentPair.baseName}`, {
-                modal: false
-            });
+            // Notification disabled: vscode.window.showInformationMessage(`Caption saved for ${currentPair.baseName}`, { modal: false });
         } else {
             vscode.window.showErrorMessage(`Failed to save caption for ${currentPair.baseName}`);
         }

@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	const refreshCommand = vscode.commands.registerCommand('imageCaptionManager.refresh', async () => {
 		await imageCaptionManager.initialize();
-		vscode.window.showInformationMessage('Image-caption pairs refreshed');
+		// Notification disabled: vscode.window.showInformationMessage('Image-caption pairs refreshed');
 	});
 	
 	const nextCommand = vscode.commands.registerCommand('imageCaptionManager.next', async () => {
@@ -69,8 +69,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showErrorMessage('Failed to initialize Image Caption Manager: ' + error.message);
 	});
 	
-	// Show welcome message
-	vscode.window.showInformationMessage('Image Caption Manager is ready! Open a folder with image-caption pairs to get started.');
+	// Welcome message disabled: vscode.window.showInformationMessage('Image Caption Manager is ready! Open a folder with image-caption pairs to get started.');
 }
 
 // This method is called when your extension is deactivated
