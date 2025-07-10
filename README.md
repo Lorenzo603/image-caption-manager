@@ -28,7 +28,7 @@ The enhanced image viewer includes:
   - `-`: Zoom out
   - `0`: Fit to window
   - `1`: Actual size (100%)
-  - `Ctrl+Shift+Left/Right` (or `Cmd+Shift+Left/Right` on Mac): Navigate between pairs
+  - `Ctrl+Alt+Left/Right` (or `Cmd+Alt+Left/Right` on Mac): Navigate between pairs
   - `Ctrl+R` (or `Cmd+R` on Mac): Refresh pairs
   - `Ctrl+S` (or `Cmd+S` on Mac): Save caption
 
@@ -63,8 +63,8 @@ Search for "Image Caption Manager" in the VS Code Extensions marketplace.
 
 ### Navigation
 
-- **Next**: Click the "Next →" button or use `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac)
-- **Previous**: Click the "← Previous" button or use `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac)
+- **Next**: Click the "Next →" button or use `Ctrl+Alt+Right` (or `Cmd+Alt+Right` on Mac)
+- **Previous**: Click the "← Previous" button or use `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac)
 - **Jump Forward**: Click "+10 →" to jump 10 pairs forward, or "+100 →" to jump 100 pairs forward
 - **Jump Backward**: Click "← -10" to jump 10 pairs backward, or "← -100" to jump 100 pairs backward
 - **Save**: Click the "Save" button or use `Ctrl+S` (or `Cmd+S` on Mac)
@@ -100,8 +100,8 @@ workspace/
 ## Keyboard Shortcuts
 
 - `Ctrl+Alt+I` (or `Cmd+Alt+I` on Mac) - Open Image Caption Manager
-- `Ctrl+Shift+Right` (or `Cmd+Shift+Right` on Mac) - Next image-caption pair
-- `Ctrl+Shift+Left` (or `Cmd+Shift+Left` on Mac) - Previous image-caption pair
+- `Ctrl+Alt+Right` (or `Cmd+Alt+Right` on Mac) - Next image-caption pair
+- `Ctrl+Alt+Left` (or `Cmd+Alt+Left` on Mac) - Previous image-caption pair
 - `Ctrl+R` (or `Cmd+R` on Mac) - Refresh image-caption pairs
 - `Ctrl+S` (or `Cmd+S` on Mac) - Save current caption (when in the caption editor)
 

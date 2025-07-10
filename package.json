@@ -137,14 +137,14 @@
             },
             {
                 "command": "imageCaptionManager.next",
-                "key": "ctrl+shift+right",
-                "mac": "cmd+shift+right",
+                "key": "ctrl+alt+right",
+                "mac": "cmd+alt+right",
                 "when": "workbenchState != empty && !editorTextFocus"
             },
             {
                 "command": "imageCaptionManager.previous",
-                "key": "ctrl+shift+left",
-                "mac": "cmd+shift+left",
+                "key": "ctrl+alt+left",
+                "mac": "cmd+alt+left",
                 "when": "workbenchState != empty && !editorTextFocus"
             },
             {
