@@ -2,6 +2,8 @@
 
 A Visual Studio Code extension for managing image-caption pairs for AI datasets. This extension helps you efficiently view and edit captions for images, making it ideal for machine learning dataset preparation.
 
+![extension screenshot](image-caption-manager-screenshot01-full.png)
+
 ## Features
 
 - **Automatic Discovery**: Automatically scans your workspace for image-caption pairs (images with corresponding `.txt` files)
