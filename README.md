@@ -14,6 +14,7 @@ A Visual Studio Code extension for managing image-caption pairs for AI datasets.
 - **Manual Refresh**: Use the refresh button or keyboard shortcut to rescan for new image-caption pairs
 - **Keyboard Shortcuts**: Use keyboard shortcuts for quick navigation and saving
 - **Status Bar Integration**: Shows the number of pairs found in the status bar
+- **Token Counter**: Displays the number of tokens in the caption using GPT tokenization
 
 ## Image Viewer Features
 
@@ -125,31 +126,12 @@ To run the extension in development mode:
 2. Build the extension: `npm run package`
 3. Package for distribution: `vsce package`
 
-### Distribution Options
+### Local Installation from VSIX
 
-**Option 1: Local Installation from VSIX**
 1. Build the `.vsix` file using `vsce package`
 2. Install locally using `code --install-extension image-caption-manager-<version>.vsix`
 3. Or use VS Code's "Install from VSIX..." option in the Extensions view
 
-**Option 2: VS Code Marketplace**
-1. Create a publisher account at https://marketplace.visualstudio.com/manage
-2. Get a Personal Access Token from Azure DevOps
-3. Login: `vsce login <publisher-id>`
-4. Publish: `vsce publish`
-
-**Option 3: Open-source Distribution**
-1. Share the `.vsix` file directly with users
-2. Users can install via "Extensions: Install from VSIX..." command
-3. Or distribute via GitHub releases
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
 
 ## License
 
